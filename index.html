@@ -5,9 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta property="og:title" content="Ray'z Welding | Mobile welding in Saskatoon">
 <meta property="og:description" content="Mobile welding and small fabrication in Saskatoon and area. Text Ray a photo of the job: 306-313-8281.">
-<meta property="og:image" content="film-poster.jpg">
-<title>Ray'z Welding</title>
+<meta property="og:image" content="https://lucasrose001.github.io/rayz-welding/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0b0b0c">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="preload" as="image" href="film-poster.jpg">
+<title>Ray'z Welding | Mobile Welding in Saskatoon &amp; Area</title>
 <meta name="description" content="Mobile welding and small fabrication in Saskatoon and area. CWB certified. Text Ray a photo of the job: 306-313-8281.">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "LocalBusiness", "additionalType": "https://schema.org/HomeAndConstructionBusiness", "name": "Ray'z Welding Ltd.", "description": "Mobile welding repairs and small-scale custom fabrication in Saskatoon and area. CWB certified.", "url": "https://lucasrose001.github.io/rayz-welding/", "image": "https://lucasrose001.github.io/rayz-welding/img/og.jpg", "telephone": "+1-306-313-8281", "priceRange": "$99-$144/hr", "address": {"@type": "PostalAddress", "addressLocality": "Saskatoon", "addressRegion": "SK", "addressCountry": "CA"}, "areaServed": [{"@type": "City", "name": "Saskatoon, SK"}, {"@type": "City", "name": "Martensville, SK"}, {"@type": "City", "name": "Warman, SK"}, {"@type": "City", "name": "Osler, SK"}, {"@type": "City", "name": "Dalmeny, SK"}, {"@type": "City", "name": "Langham, SK"}, {"@type": "City", "name": "Hague, SK"}, {"@type": "City", "name": "Aberdeen, SK"}, {"@type": "City", "name": "Clavet, SK"}, {"@type": "City", "name": "Dundurn, SK"}, {"@type": "City", "name": "Vanscoy, SK"}, {"@type": "City", "name": "Delisle, SK"}], "sameAs": ["https://www.instagram.com/rayzwelding/"], "makesOffer": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Mobile welding repair"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Emergency welding repair"}}, {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "Small-scale custom fabrication"}}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Kaushan+Script&display=swap">
@@ -126,6 +136,42 @@ p { margin: 0; }
   .rate .price { grid-column: 1 / -1; font-size: 3.2rem; margin: 4px 0 0; }
   .rate p { grid-column: 1 / -1; }
 }
+
+/* ---------- how it works ---------- */
+.how { padding-block: 100px 90px; background: var(--black); }
+.how h2 { margin-bottom: 44px; }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; counter-reset: step; }
+.step { position: relative; padding-top: 22px; border-top: 1px solid var(--line); }
+.step .n { font-stretch: 75%; font-weight: 900; font-size: 5.4rem; line-height: .8; color: transparent; -webkit-text-stroke: 1.5px rgba(255,178,63,.55); display: block; margin-bottom: 18px; }
+.step svg { position: absolute; right: 0; top: 26px; width: 40px; height: 40px; fill: none; stroke: var(--hot); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.step h3 { font-size: 1.9rem; }
+.step p { color: var(--grey); margin-top: 10px; max-width: 24rem; }
+@media (max-width: 760px) { .steps { grid-template-columns: 1fr; gap: 34px; } .step .n { font-size: 4.2rem; } }
+
+/* ---------- service area ---------- */
+.area { padding-block: 100px; border-top: 1px solid var(--line); background: radial-gradient(50% 60% at 75% 50%, rgba(227,38,43,.08), transparent 70%), var(--black); }
+.area .wrap { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(28px, 5vw, 72px); align-items: center; }
+.area p { color: #cfcfcb; margin-top: 18px; max-width: 30rem; }
+.area ul { list-style: none; margin: 26px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.area li { border: 1px solid var(--line); padding: 6px 12px; border-radius: 999px; font-size: .92rem; color: #dcdcd8; }
+.area li:first-child { border-color: var(--red); color: var(--white); }
+.area .small { font-size: .95rem; color: var(--grey); }
+.map { width: 100%; height: auto; display: block; overflow: visible; }
+.map .ring { fill: none; stroke: rgba(227,38,43,.35); stroke-dasharray: 3 7; }
+.map .river { fill: none; stroke: #2c4a63; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; opacity: .75; }
+.map .road { stroke: rgba(242,242,240,.28); stroke-width: 1.5; stroke-dasharray: 400; stroke-dashoffset: 0; }
+.map .town circle { fill: var(--black); stroke: var(--hot); stroke-width: 2; }
+.map text { fill: #dcdcd8; font: 600 16px var(--f-head); paint-order: stroke; stroke: var(--black); stroke-width: 4px; stroke-linejoin: round; }
+.map .city circle { fill: var(--red); }
+.map .city text { fill: var(--white); font-size: 24px; font-weight: 800; font-stretch: 80%; text-transform: uppercase; letter-spacing: .02em; }
+.map .pulse { fill: none !important; stroke: var(--red); stroke-width: 2; transform-origin: center; transform-box: fill-box; animation: pulse 2.4s ease-out infinite; }
+@keyframes pulse { from { transform: scale(1); opacity: .9; } to { transform: scale(4.5); opacity: 0; } }
+.map .compass { fill: var(--grey); font-size: 13px; }
+.map .compass-arrow { fill: var(--grey); }
+.map.drawn .road { animation: draw 1.4s ease-out both; animation-delay: var(--d); }
+@keyframes draw { from { stroke-dashoffset: 400; } to { stroke-dashoffset: 0; } }
+@media (max-width: 860px) { .area .wrap { grid-template-columns: 1fr; } .map text { font-size: 25px; stroke-width: 5px; } .map .town circle { r: 7; } .map .city text { font-size: 32px; } }
+@media (prefers-reduced-motion: reduce) { .map .pulse, .map.drawn .road { animation: none; } }
 
 /* ---------- jobs ---------- */
 .jobs { padding-block: 100px; background: radial-gradient(60% 50% at 100% 0%, rgba(255,120,40,.07), transparent 70%), var(--black); }
@@ -298,6 +344,23 @@ footer .logo { font-size: 1.5rem; }
 
   <hr class="heat" aria-hidden="true">
 
+  <section class="how gutter" id="how">
+    <div class="wrap">
+      <h2>How it works</h2>
+      <div class="steps">
+        <div class="step"><span class="n">1</span>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="13" width="38" height="27" rx="3"/><path d="M17 13l3-5h8l3 5"/><circle cx="24" cy="26" r="8"/></svg>
+          <h3>Snap a photo</h3><p>Get a clear shot of what broke. For a build, a quick drawing with measurements.</p></div>
+        <div class="step"><span class="n">2</span>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 10h32a3 3 0 0 1 3 3v18a3 3 0 0 1-3 3H20l-9 7v-7H8a3 3 0 0 1-3-3V13a3 3 0 0 1 3-3z"/><path d="M14 20h20M14 26h12"/></svg>
+          <h3>Text it to Ray</h3><p>Send it to 306-313-8281 with where you are. He'll ask a couple of questions and give you a price.</p></div>
+        <div class="step"><span class="n">3</span>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M3 30V17h24v13M27 21h9l7 7v2H27"/><path d="M3 30h40v5H3z"/><circle cx="12" cy="37" r="4"/><circle cx="35" cy="37" r="4"/></svg>
+          <h3>He rolls up</h3><p>Ray drives out, fixes it where it sits, and cleans up before he leaves.</p></div>
+      </div>
+    </div>
+  </section>
+
   <section class="jobs gutter">
     <div class="wrap">
       <h2>Recent jobs</h2>
@@ -317,6 +380,27 @@ footer .logo { font-size: 1.5rem; }
           </figure>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="area gutter" id="area">
+    <div class="wrap">
+      <div>
+        <h2>Where Ray goes</h2>
+        <p>Based in Saskatoon and on the road every day. Yards, farms, shops and job sites across the city and the towns around it.</p>
+        <ul aria-label="Towns served"><li>Saskatoon</li><li>Martensville</li><li>Warman</li><li>Osler</li><li>Dalmeny</li><li>Langham</li><li>Hague</li><li>Aberdeen</li><li>Clavet</li><li>Dundurn</li><li>Vanscoy</li><li>Delisle</li></ul>
+        <p class="small">Further out? Text Ray and ask. Out-of-town jobs take a $144 deposit.</p>
+      </div>
+      <svg class="map" viewBox="0 0 640 560" role="img" aria-label="Map of Saskatoon and the surrounding towns Ray travels to">
+  <defs><radialGradient id="reach"><stop offset="0" stop-color="#e3262b" stop-opacity=".30"/><stop offset=".6" stop-color="#e3262b" stop-opacity=".10"/><stop offset="1" stop-color="#e3262b" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="312" cy="292" r="320" fill="url(#reach)"/>
+  <circle class="ring" cx="312" cy="292" r="130"/><circle class="ring" cx="312" cy="292" r="250"/>
+  <polyline class="river" points="194,534 253,439 298,351 314,300 335,271 366,219 416,168 466,110 506,58"/>
+  <line class="road" x1="312" y1="292" x2="313" y2="176" style="--d:0ms"/><line class="road" x1="312" y1="292" x2="351" y2="153" style="--d:70ms"/><line class="road" x1="312" y1="292" x2="370" y2="117" style="--d:140ms"/><line class="road" x1="312" y1="292" x2="268" y2="139" style="--d:210ms"/><line class="road" x1="312" y1="292" x2="180" y2="122" style="--d:280ms"/><line class="road" x1="312" y1="292" x2="426" y2="26" style="--d:350ms"/><line class="road" x1="312" y1="292" x2="483" y2="150" style="--d:420ms"/><line class="road" x1="312" y1="292" x2="450" y2="403" style="--d:490ms"/><line class="road" x1="312" y1="292" x2="389" y2="526" style="--d:560ms"/><line class="road" x1="312" y1="292" x2="168" y2="376" style="--d:630ms"/><line class="road" x1="312" y1="292" x2="101" y2="443" style="--d:700ms"/>
+  <g class="town"><circle cx="313" cy="176" r="5"/><text x="324" y="181" text-anchor="start">Martensville</text></g><g class="town"><circle cx="351" cy="153" r="5"/><text x="362" y="158" text-anchor="start">Warman</text></g><g class="town"><circle cx="370" cy="117" r="5"/><text x="381" y="122" text-anchor="start">Osler</text></g><g class="town"><circle cx="268" cy="139" r="5"/><text x="257" y="144" text-anchor="end">Dalmeny</text></g><g class="town"><circle cx="180" cy="122" r="5"/><text x="169" y="127" text-anchor="end">Langham</text></g><g class="town"><circle cx="426" cy="26" r="5"/><text x="437" y="31" text-anchor="start">Hague</text></g><g class="town"><circle cx="483" cy="150" r="5"/><text x="494" y="155" text-anchor="start">Aberdeen</text></g><g class="town"><circle cx="450" cy="403" r="5"/><text x="461" y="408" text-anchor="start">Clavet</text></g><g class="town"><circle cx="389" cy="526" r="5"/><text x="400" y="531" text-anchor="start">Dundurn</text></g><g class="town"><circle cx="168" cy="376" r="5"/><text x="157" y="381" text-anchor="end">Vanscoy</text></g><g class="town"><circle cx="101" cy="443" r="5"/><text x="90" y="448" text-anchor="end">Delisle</text></g>
+  <g class="city"><circle class="pulse" cx="312" cy="292" r="10"/><circle cx="312" cy="292" r="10"/><text x="330" y="299">Saskatoon</text></g>
+  <text class="compass" x="616" y="30" text-anchor="middle">N</text><path class="compass-arrow" d="M616 38 l-6 14 l6 -4 l6 4 z"/>
+</svg>
     </div>
   </section>
 
@@ -451,11 +535,13 @@ document.getElementById('copy').addEventListener('click', function () {
   var io = new IntersectionObserver(function (es) { es.forEach(function (e) {
     if (!e.isIntersecting) return;
     if (e.target.classList.contains('heat')) e.target.classList.add('lit');
+    else if (e.target.classList.contains('map')) e.target.classList.add('drawn');
     else { e.target.classList.add('rev'); e.target.classList.remove('pre'); }
     io.unobserve(e.target);
   }); }, { threshold: .15 });
   document.querySelectorAll('.heat').forEach(function (h) { io.observe(h); });
-  if (!still) document.querySelectorAll('.rates .head, .rate, .jobs h2, .jobs figure, .said .lead, .review, .text-ray .wrap > div').forEach(function (el, i) {
+  if (!still) { var m = document.querySelector('.map'); m.querySelectorAll('.road').forEach(function (r) { r.style.strokeDashoffset = 400; }); io.observe(m); }
+  if (!still) document.querySelectorAll('.how h2, .step, .area .wrap > div, .rates .head, .rate, .jobs h2, .jobs figure, .said .lead, .review, .text-ray .wrap > div').forEach(function (el, i) {
     if (el.getBoundingClientRect().top < innerHeight) return;           // already on screen: leave it alone
     el.classList.add('pre'); el.style.transitionDelay = (el.matches('.rate, .review') ? (i % 3) * 90 : 0) + 'ms'; io.observe(el);
   });
