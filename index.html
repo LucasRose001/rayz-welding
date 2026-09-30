@@ -86,7 +86,7 @@ p { margin: 0; }
 
 /* ---------- shared: photo backgrounds pulled from the film ---------- */
 .has-bg { position: relative; isolation: isolate; overflow: hidden; }
-.bg { position: absolute; inset: -12% 0; z-index: -2; background-size: cover; background-position: center; will-change: transform; }
+.bg { position: absolute; inset: -12% 0; z-index: -2; background-size: cover; background-position: center; }
 .shade { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
 
 /* a weld line that glows white-hot, then cools to steel as it scrolls into view */
@@ -107,7 +107,7 @@ p { margin: 0; }
 .rates .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px 40px; margin-bottom: 48px; }
 .rates .head p { color: #cfcfcb; max-width: 26rem; }
 .rate-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-.rate { background: rgba(14,14,15,.62); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.08); border-top: 3px solid var(--hot); padding: 28px 26px 26px; display: flex; flex-direction: column; gap: 14px; }
+.rate { background: rgba(14,14,15,.8); border: 1px solid rgba(255,255,255,.08); border-top: 3px solid var(--hot); padding: 28px 26px 26px; display: flex; flex-direction: column; gap: 14px; }
 .rate.emergency { border-top-color: var(--red); }
 .rate svg { width: 44px; height: 44px; stroke: var(--hot); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .rate.emergency svg { stroke: var(--red); }
@@ -154,7 +154,7 @@ p { margin: 0; }
 .stars { color: var(--hot); letter-spacing: 2px; }
 .said .rating a { flex-basis: 100%; }
 .said .more { display: grid; gap: 12px; }
-.review { margin: 0; padding: 18px 20px; background: rgba(20,20,21,.78); border: 1px solid rgba(255,255,255,.07); border-radius: 4px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.review { margin: 0; padding: 18px 20px; background: rgba(20,20,21,.86); border: 1px solid rgba(255,255,255,.07); border-radius: 4px; }
 .review .who { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
 .av { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; color: #fff; flex: none; }
 .review .who b { display: block; color: var(--white); font-weight: 600; line-height: 1.2; }
@@ -166,8 +166,8 @@ p { margin: 0; }
 
 /* ---------- text ray: the molten puddle, tinted decal red ---------- */
 .text-ray { padding-block: 120px 130px; color: #fff; background: var(--red-dark); }
-.text-ray .bg { background-image: url(img/film-puddle.jpg); filter: grayscale(1) contrast(1.35) brightness(1.15); mix-blend-mode: multiply; z-index: -1; }
-.text-ray .shade { z-index: -3; background: linear-gradient(120deg, #c21a20, var(--red) 55%, #ff4b3a); }
+.text-ray .bg { background-image: url(img/contact-red.jpg); z-index: -1; }
+.text-ray .shade { z-index: -3; background: var(--red-dark); }
 .text-ray #embers { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
 .text-ray .wrap { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 40px; align-items: end; }
 .text-ray h2 { font-size: clamp(3rem, 9vw, 6.6rem); text-shadow: 0 4px 30px rgba(90,0,0,.35); }
@@ -394,12 +394,20 @@ document.getElementById('copy').addEventListener('click', function () {
   var src = matchMedia('(max-width: 760px)').matches ? 'rayz-film-mobile.mp4' : 'rayz-film.mp4';
   var target = 0, shown = -1;
 
-  // Load the whole clip into memory first so seeking backwards and forwards is instant.
-  fetch(src).then(function (r) { if (!r.ok) throw 0; return r.blob(); }).then(function (b) {
-    v.src = URL.createObjectURL(b);
-    v.addEventListener('loadeddata', function () { stage.classList.add('ready'); }, { once: true });
-    v.load();
-  }).catch(function () { /* poster stays */ });
+  // Load the whole clip into memory so seeking both ways is instant. If that's slow (LTE), stream it directly instead.
+  var started = false;
+  function start(url) {
+    if (started) return; started = true;
+    v.addEventListener('loadeddata', function () {
+      stage.classList.add('ready');
+      // iPhones only paint seeked frames once the video has "played"; a muted play+pause wakes it up.
+      var pp = v.play(); if (pp && pp.then) pp.then(function () { v.pause(); }, function () {});
+    }, { once: true });
+    v.src = url; v.load();
+  }
+  fetch(src).then(function (r) { if (!r.ok) throw 0; return r.blob(); }).then(function (b) { start(URL.createObjectURL(b)); }, function () { start(src); });
+  setTimeout(function () { start(src); }, 2500);
+  addEventListener('touchstart', function prime() { if (v.readyState > 0 && v.paused) { var pp = v.play(); if (pp && pp.then) pp.then(function () { v.pause(); }, function () {}); } removeEventListener('touchstart', prime); }, { passive: true });
 
   // The film finishes at the end of the last chapter, then holds its final frame while the truck section slides over it.
   var lastCh = [].slice.call(document.querySelectorAll('.chapter')).pop();
@@ -413,6 +421,7 @@ document.getElementById('copy').addEventListener('click', function () {
       if (!v.seeking && Math.abs(target - shown) > 0.01) {
         shown += (target - shown) * 0.25;           // ease toward the scroll position
         if (Math.abs(target - shown) < 0.02) shown = target;
+        if (!v.paused) v.pause();
         v.currentTime = shown;
       }
     }
