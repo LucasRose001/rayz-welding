@@ -1,3 +1,11 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:title" content="Ray'z Welding | Mobile welding in Saskatoon">
+<meta property="og:description" content="Mobile welding and small fabrication in Saskatoon and area. Text Ray a photo of the job: 306-313-8281.">
+<meta property="og:image" content="film-poster.jpg">
 <title>Ray'z Welding</title>
 <meta name="description" content="Mobile welding and small fabrication in Saskatoon and area. CWB certified. Text Ray a photo of the job: 306-313-8281.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,7 +62,8 @@ p { margin: 0; }
   background: linear-gradient(90deg, rgba(11,11,12,.82) 0%, rgba(11,11,12,.45) 38%, rgba(11,11,12,0) 65%), linear-gradient(0deg, rgba(11,11,12,.6), transparent 30%); }
 .chapters { position: relative; z-index: 2; margin-top: -100vh; margin-top: -100svh; }
 .chapter { min-height: 100vh; min-height: 100svh; display: flex; align-items: center; }
-.chapter .copy { max-width: 34rem; padding-block: 96px; }
+.chapter .copy { padding-block: 96px; }
+.chapter .copy > * { max-width: 34rem; }
 .chapter h1 { font-size: clamp(3.4rem, 10vw, 7.4rem); }
 .chapter h2 { font-size: clamp(2.6rem, 7vw, 5rem); }
 .chapter p { margin-top: 18px; font-size: 1.15rem; color: #dcdcd8; max-width: 30rem; text-shadow: 0 1px 12px rgba(0,0,0,.6); }
@@ -132,8 +141,20 @@ footer { padding-block: 34px 44px; color: var(--grey); font-size: .92rem; }
 footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; justify-content: space-between; }
 footer .logo { font-size: 1.5rem; }
 
+/* phones: the film is cropped to its centre, so put the words low on the screen over a dark fade */
+@media (max-width: 760px) {
+  .film-stage::after { background: linear-gradient(0deg, rgba(11,11,12,.95) 0%, rgba(11,11,12,.75) 38%, rgba(11,11,12,0) 70%); }
+  .chapter { align-items: flex-end; }
+  .chapter .copy { padding-block: 0 88px; }
+  .chapter h1 { font-size: clamp(2.9rem, 13vw, 4rem); }
+  .chapter h2 { font-size: clamp(2.3rem, 11vw, 3.4rem); }
+  .chapter p { font-size: 1.05rem; }
+  .scroll-cue { display: none; }
+}
 @media (prefers-reduced-motion: reduce) { .film-stage video { display: none; } }
 </style>
+</head>
+<body>
 
 <nav class="nav gutter" id="nav" aria-label="Main">
   <div class="wrap row">
@@ -321,3 +342,5 @@ document.getElementById('copy').addEventListener('click', function () {
   requestAnimationFrame(frame);
 })();
 </script>
+</body>
+</html>
