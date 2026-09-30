@@ -84,6 +84,8 @@ p { margin: 0; }
 .scroll-cue::after { content: ""; display: block; width: 1px; height: 34px; margin: 8px auto 0; background: linear-gradient(var(--grey), transparent); }
 
 /* ---------- truck: slides up over the film's last frame while it dims ---------- */
+.arc-flash { position: absolute; inset: 0; opacity: 0; pointer-events: none; z-index: 1;
+  background: radial-gradient(40% 50% at 58% 45%, #fff 0%, #ffe6b0 25%, rgba(255,160,60,.6) 55%, rgba(255,90,20,0) 80%); }
 .film-dim { position: absolute; inset: 0; background: var(--black); opacity: 0; pointer-events: none; z-index: 1; }
 .film-stage::after { z-index: 1; }
 .truck { position: relative; padding-block: 18vh 26vh; }
@@ -273,6 +275,7 @@ footer .logo { font-size: 1.5rem; }
     <div class="film-stage" id="stage">
       <img id="poster" src="film-poster.jpg" alt="" onerror="this.hidden=true">
       <video id="film" muted playsinline preload="auto" aria-hidden="true"></video>
+      <div class="arc-flash" id="flash"></div>
       <div class="film-dim" id="dim"></div>
       <div class="scroll-cue" aria-hidden="true">Scroll</div>
     </div>
@@ -474,7 +477,7 @@ document.getElementById('copy').addEventListener('click', function () {
 // Scroll-scrubbed film: page scroll through the film section sets the video's time.
 (function () {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var stage = document.getElementById('stage'), v = document.getElementById('film'), film = document.querySelector('.film');
+  var stage = document.getElementById('stage'), v = document.getElementById('film'), film = document.querySelector('.film'), flash = document.getElementById('flash');
   var src = matchMedia('(max-width: 760px)').matches ? 'rayz-film-mobile.mp4' : 'rayz-film.mp4';
   var target = 0, shown = -1;
 
@@ -507,6 +510,9 @@ document.getElementById('copy').addEventListener('click', function () {
         if (Math.abs(target - shown) < 0.02) shown = target;
         if (!v.paused) v.pause();
         v.currentTime = shown;
+        // The footage has one cut (close-up to wide) at 8.6s: cover it with a burst of arc light.
+        var d = Math.abs(shown - 8.6), f = d < .45 ? Math.pow(1 - d / .45, 1.6) : 0;
+        flash.style.opacity = f.toFixed(3);
       }
     }
     requestAnimationFrame(frame);
