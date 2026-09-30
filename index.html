@@ -1,0 +1,323 @@
+<title>Ray'z Welding</title>
+<meta name="description" content="Mobile welding and small fabrication in Saskatoon and area. CWB certified. Text Ray a photo of the job: 306-313-8281.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Kaushan+Script&display=swap">
+<style>
+/* Layout: a scroll-driven weld film pinned behind four short chapters, then plain real-world sections: the truck, rates, jobs, what people said, text Ray. */
+:root {
+  --black: #0b0b0c;
+  --panel: #141415;
+  --line: #2b2b2e;
+  --grey: #a7a7ad;
+  --white: #f2f2f0;
+  --red: #e3262b;
+  --red-dark: #b3161b;
+  --hot: #ffb23f;
+  --f-head: "Archivo", "Arial Narrow", Arial, sans-serif;
+  --f-script: "Kaushan Script", "Brush Script MT", cursive;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--black); color: var(--white); font: 400 1.0625rem/1.6 var(--f-head); font-stretch: 100%; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+img, video { max-width: 100%; display: block; }
+.gutter { padding-inline: clamp(16px, 5vw, 64px); }
+.wrap { max-width: 1180px; margin-inline: auto; }
+h1, h2, h3 { font-family: var(--f-head); font-stretch: 75%; font-weight: 850; text-transform: uppercase; line-height: .92; margin: 0; letter-spacing: -.005em; text-wrap: balance; }
+h2 { font-size: clamp(2.6rem, 7.5vw, 5.4rem); }
+p { margin: 0; }
+:focus-visible { outline: 2px solid var(--hot); outline-offset: 3px; }
+
+.logo { font-family: var(--f-script); color: var(--red); display: inline-block; transform: rotate(-4deg); line-height: 1; text-decoration: none; }
+
+/* nav */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 30; padding-top: env(safe-area-inset-top, 0px); transition: background .3s; }
+.nav.solid { background: rgba(11,11,12,.92); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
+.nav .row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+.nav .logo { font-size: 1.75rem; }
+.nav .tel { font-stretch: 85%; font-weight: 700; font-size: 1.05rem; text-decoration: none; letter-spacing: .02em; white-space: nowrap; }
+.nav .tel span { color: var(--grey); font-weight: 500; margin-right: 8px; }
+@media (max-width: 520px) { .nav .tel span { display: none; } }
+
+.btn { display: inline-block; text-decoration: none; background: var(--red); color: #fff; font-stretch: 85%; font-weight: 800; font-size: 1.05rem; text-transform: uppercase; letter-spacing: .04em; padding: 15px 22px; border-radius: 3px; border: 0; cursor: pointer; transition: background .15s; }
+.btn:hover { background: var(--red-dark); }
+.link { color: var(--white); font-weight: 600; text-underline-offset: 4px; text-decoration-color: var(--red); text-decoration-thickness: 2px; }
+
+/* ---------- film ---------- */
+.film { position: relative; }
+.film-stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; background: var(--black); }
+.film-stage video, .film-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.film-stage video { opacity: 0; transition: opacity .4s; }
+.film-stage.ready video { opacity: 1; }
+.film-stage::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, rgba(11,11,12,.82) 0%, rgba(11,11,12,.45) 38%, rgba(11,11,12,0) 65%), linear-gradient(0deg, rgba(11,11,12,.6), transparent 30%); }
+.chapters { position: relative; z-index: 2; margin-top: -100vh; margin-top: -100svh; }
+.chapter { min-height: 100vh; min-height: 100svh; display: flex; align-items: center; }
+.chapter .copy { max-width: 34rem; padding-block: 96px; }
+.chapter h1 { font-size: clamp(3.4rem, 10vw, 7.4rem); }
+.chapter h2 { font-size: clamp(2.6rem, 7vw, 5rem); }
+.chapter p { margin-top: 18px; font-size: 1.15rem; color: #dcdcd8; max-width: 30rem; text-shadow: 0 1px 12px rgba(0,0,0,.6); }
+.chapter .ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-top: 28px; }
+.chapter .quote { margin-top: 22px; border-left: 3px solid var(--hot); padding-left: 14px; font-size: 1rem; color: var(--grey); }
+.chapter .quote b { color: var(--white); font-weight: 600; }
+.scroll-cue { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 3; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--grey); }
+.scroll-cue::after { content: ""; display: block; width: 1px; height: 34px; margin: 8px auto 0; background: linear-gradient(var(--grey), transparent); }
+
+/* ---------- truck ---------- */
+.truck { padding-block: 110px 90px; }
+.truck .wrap { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(28px, 5vw, 72px); align-items: end; }
+.truck img { width: 100%; border-radius: 2px; }
+.truck p { color: var(--grey); margin-top: 20px; max-width: 32rem; }
+.truck p strong { color: var(--white); font-weight: 600; }
+@media (max-width: 860px) { .truck .wrap { grid-template-columns: 1fr; } }
+
+/* ---------- services + rates ---------- */
+.rates { padding-block: 90px; border-top: 1px solid var(--line); }
+.rates h2 { margin-bottom: 44px; }
+.rate { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr) auto; gap: 8px 40px; align-items: baseline; padding-block: 26px; border-top: 1px solid var(--line); }
+.rate:last-of-type { border-bottom: 1px solid var(--line); }
+.rate h3 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); }
+.rate h3 small { display: block; font-size: .95rem; font-stretch: 100%; font-weight: 600; color: var(--hot); text-transform: none; letter-spacing: 0; margin-top: 8px; }
+.rate p { color: var(--grey); }
+.rate .price { font-stretch: 75%; font-weight: 850; font-size: clamp(2.2rem, 4.4vw, 3.2rem); line-height: 1; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.rate .price span { font-size: .45em; color: var(--grey); font-weight: 600; margin-left: 2px; }
+.rates .note { color: var(--grey); margin-top: 22px; font-size: .95rem; max-width: 46rem; }
+@media (max-width: 760px) { .rate { grid-template-columns: 1fr auto; } .rate p { grid-column: 1 / -1; grid-row: 2; } }
+
+/* ---------- jobs ---------- */
+.jobs { padding-block: 90px; }
+.jobs h2 { margin-bottom: 36px; }
+.jobs .grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 12px; }
+.jobs figure { margin: 0; min-width: 0; }
+.jobs .side { display: grid; gap: 12px; }
+.jobs img { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; }
+.jobs .main img { aspect-ratio: 16 / 10; }
+.jobs .side img { aspect-ratio: 16 / 10; }
+.jobs figcaption { color: var(--grey); font-size: .95rem; margin-top: 10px; }
+.jobs figcaption b { color: var(--white); font-weight: 600; }
+@media (max-width: 760px) { .jobs .grid { grid-template-columns: 1fr; } }
+
+/* ---------- reviews ---------- */
+.said { padding-block: 100px; border-top: 1px solid var(--line); }
+.said .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 88px); }
+.said .lead blockquote { margin: 0; font-stretch: 80%; font-weight: 700; font-size: clamp(1.7rem, 3.4vw, 2.5rem); line-height: 1.15; }
+.said .lead blockquote::before { content: "\201C"; display: block; font-family: Georgia, serif; font-size: 5rem; line-height: .6; color: var(--red); margin-bottom: 10px; }
+.said cite { display: block; font-style: normal; color: var(--grey); margin-top: 18px; }
+.said cite b { color: var(--white); font-weight: 600; }
+.said .rating { margin-top: 40px; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; color: var(--grey); }
+.said .rating strong { font-stretch: 75%; font-weight: 850; font-size: 3.4rem; line-height: 1; color: var(--white); }
+.said .rating .stars { color: var(--hot); letter-spacing: 3px; }
+.said .more { display: grid; gap: 0; }
+.said .more figure { margin: 0; padding-block: 20px; border-top: 1px solid var(--line); }
+.said .more figure:first-child { border-top: 0; padding-top: 0; }
+.said .more blockquote { margin: 0; color: #dcdcd8; }
+.said .more cite { margin-top: 8px; font-size: .92rem; }
+@media (max-width: 860px) { .said .wrap { grid-template-columns: 1fr; } }
+
+/* ---------- text ray ---------- */
+.text-ray { padding-block: 100px 110px; background: var(--red); color: #fff; }
+.text-ray .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: end; }
+.text-ray h2 { font-size: clamp(3rem, 9vw, 6.6rem); }
+.text-ray p { margin-top: 18px; max-width: 30rem; font-size: 1.1rem; }
+.text-ray .number { font-stretch: 75%; font-weight: 900; font-size: clamp(2.8rem, 8vw, 5.2rem); line-height: 1; letter-spacing: .01em; user-select: all; font-variant-numeric: tabular-nums; }
+.text-ray .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+.text-ray .btn { background: var(--black); }
+.text-ray .btn:hover { background: #000; }
+.text-ray .btn.alt { background: transparent; border: 2px solid #fff; padding: 13px 20px; }
+.text-ray .copied { display: block; margin-top: 10px; min-height: 1.4em; font-weight: 600; }
+@media (max-width: 860px) { .text-ray .wrap { grid-template-columns: 1fr; } }
+
+footer { padding-block: 34px 44px; color: var(--grey); font-size: .92rem; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; justify-content: space-between; }
+footer .logo { font-size: 1.5rem; }
+
+@media (prefers-reduced-motion: reduce) { .film-stage video { display: none; } }
+</style>
+
+<nav class="nav gutter" id="nav" aria-label="Main">
+  <div class="wrap row">
+    <a class="logo" href="#top">Ray'z Welding</a>
+    <a class="tel" href="sms:+13063138281"><span>Text</span>306-313-8281</a>
+  </div>
+</nav>
+
+<main id="top">
+  <section class="film" aria-label="Ray'z Welding">
+    <div class="film-stage" id="stage">
+      <img id="poster" src="film-poster.jpg" alt="" onerror="this.hidden=true">
+      <video id="film" muted playsinline preload="auto" aria-hidden="true"></video>
+      <div class="scroll-cue" aria-hidden="true">Scroll</div>
+    </div>
+    <div class="chapters gutter">
+      <article class="chapter"><div class="wrap copy">
+        <h1>Mobile welding in Saskatoon.</h1>
+        <p>Broken hitch, cracked frame, snapped bracket. Ray brings the welder to you and fixes it where it sits.</p>
+        <div class="ctas">
+          <a class="btn" href="sms:+13063138281">Text Ray a photo</a>
+          <a class="link" href="#rates">$99 an hour</a>
+        </div>
+      </div></article>
+      <article class="chapter"><div class="wrap copy">
+        <h2>Farm, yard, shop or job site.</h2>
+        <p>Equipment, trailers, wagons, gates and snow blowers. If it's steel and it broke, send a picture.</p>
+      </div></article>
+      <article class="chapter"><div class="wrap copy">
+        <h2>Built back stronger.</h2>
+        <p>CWB certified. Where a part keeps failing, Ray builds up the bead so it holds next season too.</p>
+        <p class="quote">"He even built up the bead to ensure it's got some extra strength for the future." <b>Jay</b></p>
+      </div></article>
+      <article class="chapter"><div class="wrap copy">
+        <h2>Fixed. Swept up. Gone.</h2>
+        <p>No hauling it anywhere, no waiting on a shop. And he cleans up before he leaves.</p>
+        <div class="ctas"><a class="btn" href="sms:+13063138281">Text 306-313-8281</a></div>
+      </div></article>
+    </div>
+  </section>
+
+  <section class="truck gutter">
+    <div class="wrap">
+      <img src="truck.jpg" alt="Ray's black Ford F250 with the red Ray'z Welding decal and a Miller welder in the box" loading="lazy">
+      <div>
+        <h2>Look for the black F250.</h2>
+        <p>That's the whole shop. <strong>A Miller welder in the box, Ray behind the wheel.</strong> He answers his own texts, quotes the job himself, and does the work himself.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="rates gutter" id="rates">
+    <div class="wrap">
+      <h2>What it costs</h2>
+      <div class="rate">
+        <h3>Mobile repair</h3>
+        <p>Ray comes to you. $144 deposit for jobs out of town.</p>
+        <div class="price">$99<span>/hr</span></div>
+      </div>
+      <div class="rate">
+        <h3>Emergency<small>Evenings, 5 to 9 pm</small></h3>
+        <p>Broke down tonight and can't wait. $150+ deposit.</p>
+        <div class="price">$144<span>/hr</span></div>
+      </div>
+      <div class="rate">
+        <h3>Small fabrication</h3>
+        <p>Brackets, mounts and one-off parts built to your drawing. Deposit covers the steel, sourcing and handling.</p>
+        <div class="price">$99<span>/hr</span></div>
+      </div>
+      <p class="note">For a quote, text clear photos of the repair, or a drawing with measurements, plus where the job is.</p>
+    </div>
+  </section>
+
+  <section class="jobs gutter">
+    <div class="wrap">
+      <h2>Recent jobs</h2>
+      <div class="grid">
+        <figure class="main">
+          <img src="weld.jpg" alt="Heavy weld on the flange of an orange industrial snow blower" loading="lazy">
+          <figcaption><b>Industrial snow blower.</b> Welded back together on site, plus an emergency fix on a second machine while he was there.</figcaption>
+        </figure>
+        <div class="side">
+          <figure>
+            <img src="cart.jpg" alt="Repaired axle bracket on a steel wheeled cart" loading="lazy">
+            <figcaption><b>Cart axle mount,</b> rebuilt.</figcaption>
+          </figure>
+          <figure>
+            <img src="hinge.jpg" alt="Welded plate on a steel frame" loading="lazy">
+            <figcaption><b>Cracked frame plate,</b> welded solid.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="said gutter" id="reviews">
+    <div class="wrap">
+      <div class="lead">
+        <figure style="margin:0">
+          <blockquote>Thank you to Ray for showing up and doing the weld on my horse wagon. It was an emergency weld as I was at my event. Kept a lot of families happy.</blockquote>
+          <cite><b>Rich Pilon</b>, on Google</cite>
+        </figure>
+        <div class="rating"><strong>5.0</strong><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><span>10 Google reviews</span></div>
+      </div>
+      <div class="more">
+        <figure><blockquote>I called him up and he came immediately, just with a few questions and a quote which was very reasonable, and got to work right away. Even took the time to clean up after finishing the work and didn't charge for cleaning up.</blockquote><cite><b>Kamui Ratzliff</b></cite></figure>
+        <figure><blockquote>Absolutely the best! Quick to get to us, wonderful work and the price was beyond reasonable!</blockquote><cite><b>Elle Esford</b></cite></figure>
+        <figure><blockquote>Excellent craftsmanship. Quick communication. Reasonable pricing and very quick turnaround. Highly recommended.</blockquote><cite><b>Dustin M</b></cite></figure>
+        <figure><blockquote>He came very promptly, he works very efficiently! Also has very reasonable prices!</blockquote><cite><b>Rab</b></cite></figure>
+        <figure><blockquote>Excellent in every way, great work, fair prices, highly recommended.</blockquote><cite><b>Prose</b></cite></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="text-ray gutter" id="contact">
+    <div class="wrap">
+      <div>
+        <h2>Text Ray a photo.</h2>
+        <p>Show him what broke and tell him where you are. He'll ask a couple of questions and give you a price.</p>
+      </div>
+      <div>
+        <div class="number" id="number">306-313-8281</div>
+        <div class="actions">
+          <a class="btn" href="sms:+13063138281">Text Ray</a>
+          <button class="btn alt" id="copy" type="button">Copy number</button>
+        </div>
+        <span class="copied" id="copied" aria-live="polite"></span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="gutter">
+  <div class="wrap">
+    <span class="logo">Ray'z Welding</span>
+    <span>Ray'z Welding Ltd. · Mobile welding &amp; fabrication · Saskatoon and area</span>
+    <a class="link" href="https://www.instagram.com/rayzwelding/" target="_blank" rel="noopener">@rayzwelding</a>
+  </div>
+</footer>
+
+<script>
+// Nav turns solid once you're past the film.
+(function () {
+  var nav = document.getElementById('nav'), film = document.querySelector('.film');
+  function onScroll() { nav.classList.toggle('solid', window.scrollY > film.offsetHeight - window.innerHeight - 40); }
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+})();
+
+// Copy number
+document.getElementById('copy').addEventListener('click', function () {
+  var out = document.getElementById('copied');
+  function sel() { var r = document.createRange(); r.selectNodeContents(document.getElementById('number')); var s = getSelection(); s.removeAllRanges(); s.addRange(r); out.textContent = 'Number selected'; }
+  try { navigator.clipboard.writeText('306-313-8281').then(function () { out.textContent = 'Copied'; }, sel); } catch (e) { sel(); }
+});
+
+// Scroll-scrubbed film: page scroll through the film section sets the video's time.
+(function () {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var stage = document.getElementById('stage'), v = document.getElementById('film'), film = document.querySelector('.film');
+  var src = matchMedia('(max-width: 760px)').matches ? 'rayz-film-mobile.mp4' : 'rayz-film.mp4';
+  var target = 0, shown = -1;
+
+  // Load the whole clip into memory first so seeking backwards and forwards is instant.
+  fetch(src).then(function (r) { if (!r.ok) throw 0; return r.blob(); }).then(function (b) {
+    v.src = URL.createObjectURL(b);
+    v.addEventListener('loadeddata', function () { stage.classList.add('ready'); }, { once: true });
+    v.load();
+  }).catch(function () { /* poster stays */ });
+
+  function progress() {
+    var r = film.getBoundingClientRect(), total = r.height - innerHeight;
+    return Math.min(1, Math.max(0, -r.top / total));
+  }
+  function frame() {
+    if (v.duration) {
+      target = progress() * (v.duration - 0.05);
+      if (!v.seeking && Math.abs(target - shown) > 0.01) {
+        shown += (target - shown) * 0.25;           // ease toward the scroll position
+        if (Math.abs(target - shown) < 0.02) shown = target;
+        v.currentTime = shown;
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
