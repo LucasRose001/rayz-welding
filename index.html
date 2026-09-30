@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta property="og:title" content="Ray'z Welding | Mobile welding in Saskatoon">
 <meta property="og:description" content="Mobile welding and small fabrication in Saskatoon and area. Text Ray a photo of the job: 306-313-8281.">
-<meta property="og:image" content="frames/f150.jpg">
+<meta property="og:image" content="film-poster.jpg">
 <title>Ray'z Welding</title>
 <meta name="description" content="Mobile welding and small fabrication in Saskatoon and area. CWB certified. Text Ray a photo of the job: 306-313-8281.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,7 +40,7 @@ p { margin: 0; }
 .logo { font-family: var(--f-script); color: var(--red); display: inline-block; transform: rotate(-4deg); line-height: 1; text-decoration: none; }
 
 /* nav */
-.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 30; padding-top: env(safe-area-inset-top, 0px); transition: background .3s; background: linear-gradient(rgba(11,11,12,.9), rgba(11,11,12,.55) 60%, rgba(11,11,12,0)); }
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 30; padding-top: env(safe-area-inset-top, 0px); transition: background .3s; }
 .nav.solid { background: rgba(11,11,12,.92); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
 .nav .row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
 .nav .logo { font-size: 1.75rem; }
@@ -55,7 +55,9 @@ p { margin: 0; }
 /* ---------- film ---------- */
 .film { position: relative; }
 .film-stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; background: var(--black); }
-.film-stage canvas, .film-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.film-stage video, .film-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.film-stage video { opacity: 0; transition: opacity .4s; }
+.film-stage.ready video { opacity: 1; }
 .film-stage::after { content: ""; position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(90deg, rgba(11,11,12,.82) 0%, rgba(11,11,12,.45) 38%, rgba(11,11,12,0) 65%), linear-gradient(0deg, rgba(11,11,12,.6), transparent 30%); }
 .chapters { position: relative; z-index: 2; margin-top: -100vh; margin-top: -100svh; }
@@ -64,8 +66,7 @@ p { margin: 0; }
 .chapter .copy > * { max-width: 34rem; }
 .chapter h1 { font-size: clamp(3.4rem, 10vw, 7.4rem); }
 .chapter h2 { font-size: clamp(2.6rem, 7vw, 5rem); }
-.chapter h1, .chapter h2 { text-shadow: 0 2px 18px rgba(0,0,0,.55); }
-.chapter p { margin-top: 18px; font-size: 1.15rem; color: #dcdcd8; max-width: 30rem; text-shadow: 0 1px 3px rgba(0,0,0,.8), 0 1px 14px rgba(0,0,0,.7); }
+.chapter p { margin-top: 18px; font-size: 1.15rem; color: #dcdcd8; max-width: 30rem; text-shadow: 0 1px 12px rgba(0,0,0,.6); }
 .chapter .ctas { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-top: 28px; }
 .chapter .quote { margin-top: 22px; border-left: 3px solid var(--hot); padding-left: 14px; font-size: 1rem; color: var(--grey); }
 .chapter .quote b { color: var(--white); font-weight: 600; }
@@ -150,7 +151,7 @@ footer .logo { font-size: 1.5rem; }
   .chapter p { font-size: 1.05rem; }
   .scroll-cue { display: none; }
 }
-@media (prefers-reduced-motion: reduce) { .film-stage canvas { display: none; } }
+@media (prefers-reduced-motion: reduce) { .film-stage video { display: none; } }
 </style>
 </head>
 <body>
@@ -165,8 +166,8 @@ footer .logo { font-size: 1.5rem; }
 <main id="top">
   <section class="film" aria-label="Ray'z Welding">
     <div class="film-stage" id="stage">
-      <img id="poster" src="frames/f001.jpg" alt="">
-      <canvas id="film" aria-hidden="true"></canvas>
+      <img id="poster" src="film-poster.jpg" alt="" onerror="this.hidden=true">
+      <video id="film" muted playsinline preload="auto" aria-hidden="true"></video>
       <div class="scroll-cue" aria-hidden="true">Scroll</div>
     </div>
     <div class="chapters gutter">
@@ -309,26 +310,36 @@ document.getElementById('copy').addEventListener('click', function () {
   try { navigator.clipboard.writeText('306-313-8281').then(function () { out.textContent = 'Copied'; }, sel); } catch (e) { sel(); }
 });
 
-// Scroll-driven film, played as a flipbook of still frames drawn to a canvas (smooth on iPhones, unlike seeking a video).
+// Scroll-scrubbed film: page scroll through the film section sets the video's time.
 (function () {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var N = 181, film = document.querySelector('.film'), c = document.getElementById('film'), x = c.getContext('2d');
-  var imgs = new Array(N), drawn = -1;
-  function src(i) { return 'frames/f' + String(i + 1).padStart(3, '0') + '.jpg'; }
-  function load(i) { if (imgs[i]) return; var im = new Image(); im.decoding = 'async'; im.onload = function () { im.ok = true; if (i === want()) draw(true); }; im.src = src(i); imgs[i] = im; }
-  // Load a spread of frames first so any scroll position has something close, then fill in the rest.
-  for (var s = 16; s >= 1; s = s >> 1) for (var i = 0; i < N; i += s) load(i);
-  function size() { var r = c.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2); c.width = Math.round(r.width * d); c.height = Math.round(r.height * d); draw(true); }
-  function want() { var r = film.getBoundingClientRect(), t = r.height - innerHeight; return Math.round(Math.min(1, Math.max(0, -r.top / t)) * (N - 1)); }
-  function nearest(i) { for (var k = 0; k < N; k++) { if (imgs[i - k] && imgs[i - k].ok) return i - k; if (imgs[i + k] && imgs[i + k].ok) return i + k; } return -1; }
-  function draw(force) {
-    var i = nearest(want()); if (i < 0 || (i === drawn && !force)) return;
-    var im = imgs[i], cw = c.width, ch = c.height, sc = Math.max(cw / im.naturalWidth, ch / im.naturalHeight), w = im.naturalWidth * sc, h = im.naturalHeight * sc;
-    x.drawImage(im, (cw - w) / 2, (ch - h) / 2, w, h); drawn = i;
+  var stage = document.getElementById('stage'), v = document.getElementById('film'), film = document.querySelector('.film');
+  var src = matchMedia('(max-width: 760px)').matches ? 'rayz-film-mobile.mp4' : 'rayz-film.mp4';
+  var target = 0, shown = -1;
+
+  // Load the whole clip into memory first so seeking backwards and forwards is instant.
+  fetch(src).then(function (r) { if (!r.ok) throw 0; return r.blob(); }).then(function (b) {
+    v.src = URL.createObjectURL(b);
+    v.addEventListener('loadeddata', function () { stage.classList.add('ready'); }, { once: true });
+    v.load();
+  }).catch(function () { /* poster stays */ });
+
+  function progress() {
+    var r = film.getBoundingClientRect(), total = r.height - innerHeight;
+    return Math.min(1, Math.max(0, -r.top / total));
   }
-  var ticking = false;
-  addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(function () { ticking = false; draw(); }); } }, { passive: true });
-  addEventListener('resize', size); size();
+  function frame() {
+    if (v.duration) {
+      target = progress() * (v.duration - 0.05);
+      if (!v.seeking && Math.abs(target - shown) > 0.01) {
+        shown += (target - shown) * 0.25;           // ease toward the scroll position
+        if (Math.abs(target - shown) < 0.02) shown = target;
+        v.currentTime = shown;
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
 })();
 </script>
 </body>

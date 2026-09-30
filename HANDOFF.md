@@ -7,7 +7,7 @@ Single-page static site (index.html + images), to be hosted on GitHub Pages at r
 - Photos (`truck.jpg`, `weld.jpg`, `cart.jpg`, `hinge.jpg`) are crops from screenshots Lucas sent (low-res; swap for Ray's originals when available).
 
 ## Still to do
-1. **Film: done.** Played as a scroll flipbook from `frames/` (181 JPGs at 12fps, 960px wide) drawn to a canvas; `rayz-film.mp4` is kept as the source. Regenerate with `ffmpeg -i rayz-film.mp4 -vf "fps=12,scale=960:-2" -q:v 6 frames/f%03d.jpg` and update N in index.html.
+1. **Add the film.** Generated on Higgsfield (job `dd365cce-1f0b-4f0f-a060-3d5ca0e80777`, 15s, 1080p, no audio):
    https://d8j0ntlcm91z4.cloudfront.net/user_3ILDUMZDrvLzRCFe8Kri261DDIA/hf_20260930_145248_dd365cce-1f0b-4f0f-a060-3d5ca0e80777.mp4
    Download it and encode for scrubbing (short GOP so seeking is instant), writing next to index.html:
    ```bash
