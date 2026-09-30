@@ -73,69 +73,128 @@ p { margin: 0; }
 .scroll-cue { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 3; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--grey); }
 .scroll-cue::after { content: ""; display: block; width: 1px; height: 34px; margin: 8px auto 0; background: linear-gradient(var(--grey), transparent); }
 
-/* ---------- truck ---------- */
-.truck { padding-block: 110px 90px; }
+/* ---------- truck: slides up over the film's last frame while it dims ---------- */
+.film-dim { position: absolute; inset: 0; background: var(--black); opacity: 0; pointer-events: none; z-index: 1; }
+.film-stage::after { z-index: 1; }
+.truck { position: relative; padding-block: 18vh 26vh; }
 .truck .wrap { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(28px, 5vw, 72px); align-items: end; }
-.truck img { width: 100%; border-radius: 2px; }
-.truck p { color: var(--grey); margin-top: 20px; max-width: 32rem; }
+.truck img { width: 100%; border-radius: 2px; box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.06); }
+.truck p { color: #cfcfcb; margin-top: 20px; max-width: 32rem; text-shadow: 0 1px 10px rgba(0,0,0,.8); }
 .truck p strong { color: var(--white); font-weight: 600; }
-@media (max-width: 860px) { .truck .wrap { grid-template-columns: 1fr; } }
+.truck h2 { text-shadow: 0 2px 24px rgba(0,0,0,.6); }
+@media (max-width: 860px) { .truck .wrap { grid-template-columns: 1fr; } .truck { padding-block: 12vh 22vh; } }
 
-/* ---------- services + rates ---------- */
-.rates { padding-block: 90px; border-top: 1px solid var(--line); }
-.rates h2 { margin-bottom: 44px; }
-.rate { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr) auto; gap: 8px 40px; align-items: baseline; padding-block: 26px; border-top: 1px solid var(--line); }
-.rate:last-of-type { border-bottom: 1px solid var(--line); }
-.rate h3 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); }
-.rate h3 small { display: block; font-size: .95rem; font-stretch: 100%; font-weight: 600; color: var(--hot); text-transform: none; letter-spacing: 0; margin-top: 8px; }
-.rate p { color: var(--grey); }
-.rate .price { font-stretch: 75%; font-weight: 850; font-size: clamp(2.2rem, 4.4vw, 3.2rem); line-height: 1; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
-.rate .price span { font-size: .45em; color: var(--grey); font-weight: 600; margin-left: 2px; }
-.rates .note { color: var(--grey); margin-top: 22px; font-size: .95rem; max-width: 46rem; }
-@media (max-width: 760px) { .rate { grid-template-columns: 1fr auto; } .rate p { grid-column: 1 / -1; grid-row: 2; } }
+/* ---------- shared: photo backgrounds pulled from the film ---------- */
+.has-bg { position: relative; isolation: isolate; overflow: hidden; }
+.bg { position: absolute; inset: -12% 0; z-index: -2; background-size: cover; background-position: center; will-change: transform; }
+.shade { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+
+/* a weld line that glows white-hot, then cools to steel as it scrolls into view */
+.heat { height: 3px; margin: 0; border: 0; position: relative; overflow: visible;
+  background: linear-gradient(90deg, transparent, #4a4c52 12%, #6d7078 50%, #4a4c52 88%, transparent); }
+.heat::after { content: ""; position: absolute; inset: -6px 0; opacity: 0; filter: blur(6px);
+  background: radial-gradient(60% 100% at 50% 50%, #fff6e0 0%, var(--hot) 25%, var(--red) 55%, transparent 75%); }
+.heat.lit::after { animation: cool 2.8s ease-out forwards; }
+.heat.lit { animation: coolLine 2.8s ease-out forwards; }
+@keyframes cool { 0% { opacity: 1; transform: scaleX(.2); } 25% { opacity: 1; transform: scaleX(1); } 100% { opacity: 0; transform: scaleX(1); } }
+@keyframes coolLine { 0% { background: linear-gradient(90deg, transparent, var(--red) 12%, #fff1d0 50%, var(--red) 88%, transparent); }
+  100% { background: linear-gradient(90deg, transparent, #4a4c52 12%, #6d7078 50%, #4a4c52 88%, transparent); } }
+
+/* ---------- rates ---------- */
+.rates { padding-block: 120px 110px; }
+.rates .bg { background-image: url(img/film-bead.jpg); }
+.rates .shade { background: linear-gradient(180deg, var(--black) 0%, rgba(11,11,12,.72) 30%, rgba(11,11,12,.8) 70%, var(--black) 100%); }
+.rates .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px 40px; margin-bottom: 48px; }
+.rates .head p { color: #cfcfcb; max-width: 26rem; }
+.rate-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.rate { background: rgba(14,14,15,.62); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.08); border-top: 3px solid var(--hot); padding: 28px 26px 26px; display: flex; flex-direction: column; gap: 14px; }
+.rate.emergency { border-top-color: var(--red); }
+.rate svg { width: 44px; height: 44px; stroke: var(--hot); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.rate.emergency svg { stroke: var(--red); }
+.rate h3 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); }
+.rate .when { font-weight: 600; font-size: .92rem; color: var(--hot); margin-top: -6px; }
+.rate.emergency .when { color: #ff6a5e; }
+.rate .price { font-stretch: 75%; font-weight: 900; font-size: clamp(3.6rem, 6vw, 5rem); line-height: .9; font-variant-numeric: tabular-nums; margin-top: 6px; }
+.rate .price span { font-size: .32em; color: var(--grey); font-weight: 600; margin-left: 4px; letter-spacing: .02em; }
+.rate p { color: #bdbdb8; font-size: .98rem; margin-top: auto; padding-top: 10px; border-top: 1px solid rgba(255,255,255,.08); }
+.rates .note { color: #cfcfcb; margin-top: 26px; font-size: .98rem; }
+@media (max-width: 860px) {
+  .rate-grid { grid-template-columns: 1fr; }
+  .rate { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 14px; row-gap: 8px; padding: 22px 20px; align-items: center; }
+  .rate svg { width: 36px; height: 36px; }
+  .rate .when { grid-column: 2; margin: -4px 0 0; }
+  .rate .price { grid-column: 1 / -1; font-size: 3.2rem; margin: 4px 0 0; }
+  .rate p { grid-column: 1 / -1; }
+}
 
 /* ---------- jobs ---------- */
-.jobs { padding-block: 90px; }
+.jobs { padding-block: 100px; background: radial-gradient(60% 50% at 100% 0%, rgba(255,120,40,.07), transparent 70%), var(--black); }
 .jobs h2 { margin-bottom: 36px; }
 .jobs .grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 12px; }
 .jobs figure { margin: 0; min-width: 0; }
 .jobs .side { display: grid; gap: 12px; }
-.jobs img { width: 100%; height: 100%; object-fit: cover; border-radius: 2px; }
-.jobs .main img { aspect-ratio: 16 / 10; }
-.jobs .side img { aspect-ratio: 16 / 10; }
+.jobs .ph { overflow: hidden; border-radius: 2px; }
+.jobs img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 16 / 10; transition: transform .6s ease; }
+.jobs figure:hover img { transform: scale(1.04); }
 .jobs figcaption { color: var(--grey); font-size: .95rem; margin-top: 10px; }
 .jobs figcaption b { color: var(--white); font-weight: 600; }
 @media (max-width: 760px) { .jobs .grid { grid-template-columns: 1fr; } }
 
 /* ---------- reviews ---------- */
-.said { padding-block: 100px; border-top: 1px solid var(--line); }
+.said { padding-block: 110px; }
+.said .bg { background-image: url(img/film-sparks.jpg); background-position: 70% center;
+  -webkit-mask-image: linear-gradient(90deg, transparent 20%, #000 75%); mask-image: linear-gradient(90deg, transparent 20%, #000 75%); opacity: .38; }
+.said .shade { background: linear-gradient(180deg, var(--black), transparent 25%, transparent 75%, var(--black)); }
 .said .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 88px); }
 .said .lead blockquote { margin: 0; font-stretch: 80%; font-weight: 700; font-size: clamp(1.7rem, 3.4vw, 2.5rem); line-height: 1.15; }
 .said .lead blockquote::before { content: "\201C"; display: block; font-family: Georgia, serif; font-size: 5rem; line-height: .6; color: var(--red); margin-bottom: 10px; }
-.said cite { display: block; font-style: normal; color: var(--grey); margin-top: 18px; }
-.said cite b { color: var(--white); font-weight: 600; }
-.said .rating { margin-top: 40px; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; color: var(--grey); }
-.said .rating strong { font-stretch: 75%; font-weight: 850; font-size: 3.4rem; line-height: 1; color: var(--white); }
-.said .rating .stars { color: var(--hot); letter-spacing: 3px; }
-.said .more { display: grid; gap: 0; }
-.said .more figure { margin: 0; padding-block: 20px; border-top: 1px solid var(--line); }
-.said .more figure:first-child { border-top: 0; padding-top: 0; }
-.said .more blockquote { margin: 0; color: #dcdcd8; }
-.said .more cite { margin-top: 8px; font-size: .92rem; }
-@media (max-width: 860px) { .said .wrap { grid-template-columns: 1fr; } }
+.said cite { display: block; font-style: normal; color: var(--grey); }
+.said .rating { margin-top: 40px; display: flex; align-items: center; gap: 12px 16px; flex-wrap: wrap; color: var(--grey); }
+.said .rating strong { font-stretch: 75%; font-weight: 850; font-size: 3.6rem; line-height: 1; color: var(--white); }
+.stars { color: var(--hot); letter-spacing: 2px; }
+.said .rating a { flex-basis: 100%; }
+.said .more { display: grid; gap: 12px; }
+.review { margin: 0; padding: 18px 20px; background: rgba(20,20,21,.78); border: 1px solid rgba(255,255,255,.07); border-radius: 4px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.review .who { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.av { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; color: #fff; flex: none; }
+.review .who b { display: block; color: var(--white); font-weight: 600; line-height: 1.2; }
+.review .who small { display: flex; gap: 8px; align-items: center; color: var(--grey); font-size: .82rem; }
+.review .who small .stars { font-size: .8rem; letter-spacing: 1px; }
+.review blockquote { margin: 0; color: #dcdcd8; font-size: .98rem; }
+.lead .who { display: flex; align-items: center; gap: 12px; margin-top: 22px; }
+@media (max-width: 860px) { .said .wrap { grid-template-columns: 1fr; } .said .bg { -webkit-mask-image: linear-gradient(180deg, #000, transparent 60%); mask-image: linear-gradient(180deg, #000, transparent 60%); } }
 
-/* ---------- text ray ---------- */
-.text-ray { padding-block: 100px 110px; background: var(--red); color: #fff; }
-.text-ray .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: end; }
-.text-ray h2 { font-size: clamp(3rem, 9vw, 6.6rem); }
+/* ---------- text ray: the molten puddle, tinted decal red ---------- */
+.text-ray { padding-block: 120px 130px; color: #fff; background: var(--red-dark); }
+.text-ray .bg { background-image: url(img/film-puddle.jpg); filter: grayscale(1) contrast(1.35) brightness(1.15); mix-blend-mode: multiply; z-index: -1; }
+.text-ray .shade { z-index: -3; background: linear-gradient(120deg, #c21a20, var(--red) 55%, #ff4b3a); }
+.text-ray #embers { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.text-ray .wrap { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 40px; align-items: end; }
+.text-ray h2 { font-size: clamp(3rem, 9vw, 6.6rem); text-shadow: 0 4px 30px rgba(90,0,0,.35); }
 .text-ray p { margin-top: 18px; max-width: 30rem; font-size: 1.1rem; }
-.text-ray .number { font-stretch: 75%; font-weight: 900; font-size: clamp(2.8rem, 8vw, 5.2rem); line-height: 1; letter-spacing: .01em; user-select: all; font-variant-numeric: tabular-nums; }
+.text-ray .number { font-stretch: 75%; font-weight: 900; font-size: clamp(2.6rem, 6.4vw, 4.8rem); line-height: 1; letter-spacing: .01em; white-space: nowrap; user-select: all; font-variant-numeric: tabular-nums; }
 .text-ray .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
 .text-ray .btn { background: var(--black); }
 .text-ray .btn:hover { background: #000; }
 .text-ray .btn.alt { background: transparent; border: 2px solid #fff; padding: 13px 20px; }
 .text-ray .copied { display: block; margin-top: 10px; min-height: 1.4em; font-weight: 600; }
 @media (max-width: 860px) { .text-ray .wrap { grid-template-columns: 1fr; } }
+
+/* ---------- phone dock: Text / Call always one tap away ---------- */
+.dock { display: none; }
+@media (max-width: 760px) {
+  .dock { display: grid; grid-template-columns: 1fr auto; gap: 10px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); background: linear-gradient(transparent, rgba(11,11,12,.92) 35%);
+    transform: translateY(110%); transition: transform .35s ease; }
+  .dock.show { transform: none; }
+  .dock a { text-align: center; }
+  .dock .call { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.25); padding: 14px 20px; }
+  body { padding-bottom: 72px; }
+}
+
+/* scroll reveal: only for things that start below the fold */
+.pre { opacity: 0; transform: translateY(26px); }
+.rev { transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
 
 footer { padding-block: 34px 44px; color: var(--grey); font-size: .92rem; }
 footer .wrap { display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; justify-content: space-between; }
@@ -151,7 +210,7 @@ footer .logo { font-size: 1.5rem; }
   .chapter p { font-size: 1.05rem; }
   .scroll-cue { display: none; }
 }
-@media (prefers-reduced-motion: reduce) { .film-stage video { display: none; } }
+@media (prefers-reduced-motion: reduce) { .film-stage video { display: none; } .heat.lit, .heat.lit::after { animation: none; } .pre { opacity: 1; transform: none; } }
 </style>
 </head>
 <body>
@@ -168,6 +227,7 @@ footer .logo { font-size: 1.5rem; }
     <div class="film-stage" id="stage">
       <img id="poster" src="film-poster.jpg" alt="" onerror="this.hidden=true">
       <video id="film" muted playsinline preload="auto" aria-hidden="true"></video>
+      <div class="film-dim" id="dim"></div>
       <div class="scroll-cue" aria-hidden="true">Scroll</div>
     </div>
     <div class="chapters gutter">
@@ -193,56 +253,66 @@ footer .logo { font-size: 1.5rem; }
         <p>No hauling it anywhere, no waiting on a shop. And he cleans up before he leaves.</p>
         <div class="ctas"><a class="btn" href="sms:+13063138281">Text 306-313-8281</a></div>
       </div></article>
+      <section class="truck" id="truck">
+        <div class="wrap">
+          <img src="truck.jpg" alt="Ray's black Ford F250 with the red Ray'z Welding decal and a Miller welder in the box">
+          <div>
+            <h2>Look for the black F250.</h2>
+            <p>That's the whole shop. <strong>A Miller welder in the box, Ray behind the wheel.</strong> He answers his own texts, quotes the job himself, and does the work himself.</p>
+          </div>
+        </div>
+      </section>
     </div>
   </section>
 
-  <section class="truck gutter">
+  <section class="rates gutter has-bg" id="rates">
+    <div class="bg" data-parallax></div><div class="shade"></div>
     <div class="wrap">
-      <img src="truck.jpg" alt="Ray's black Ford F250 with the red Ray'z Welding decal and a Miller welder in the box" loading="lazy">
-      <div>
-        <h2>Look for the black F250.</h2>
-        <p>That's the whole shop. <strong>A Miller welder in the box, Ray behind the wheel.</strong> He answers his own texts, quotes the job himself, and does the work himself.</p>
+      <div class="head">
+        <h2>What it costs</h2>
+        <p>Straight hourly rates. Text clear photos of the repair, or a drawing with measurements, plus where the job is.</p>
+      </div>
+      <div class="rate-grid">
+        <article class="rate">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M3 30V17h24v13M27 21h9l7 7v2H27"/><path d="M3 30h40v5H3z"/><circle cx="12" cy="37" r="4"/><circle cx="35" cy="37" r="4"/><path d="M8 17V12h10v5"/></svg>
+          <h3>Mobile repair</h3>
+          <div class="price">$99<span>/HR</span></div>
+          <p>Ray comes to you. $144 deposit for jobs out of town.</p>
+        </article>
+        <article class="rate emergency">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M31 6a17 17 0 1 0 11 27A14 14 0 0 1 31 6z"/><path d="M36 11l1.5 3 3 1.5-3 1.5-1.5 3-1.5-3-3-1.5 3-1.5z"/></svg>
+          <h3>Emergency</h3>
+          <div class="when">Evenings, 5 to 9 pm</div>
+          <div class="price">$144<span>/HR</span></div>
+          <p>Broke down tonight and can't wait. $150+ deposit.</p>
+        </article>
+        <article class="rate">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 42l6-2 26-26-4-4L8 36z"/><path d="M30 14l4 4"/><path d="M4 8h22M4 8v8M11 8v4M18 8v4M26 8v8"/></svg>
+          <h3>Small fabrication</h3>
+          <div class="price">$99<span>/HR</span></div>
+          <p>Brackets, mounts and one-off parts built to your drawing. Deposit covers the steel, sourcing and handling.</p>
+        </article>
       </div>
     </div>
   </section>
 
-  <section class="rates gutter" id="rates">
-    <div class="wrap">
-      <h2>What it costs</h2>
-      <div class="rate">
-        <h3>Mobile repair</h3>
-        <p>Ray comes to you. $144 deposit for jobs out of town.</p>
-        <div class="price">$99<span>/hr</span></div>
-      </div>
-      <div class="rate">
-        <h3>Emergency<small>Evenings, 5 to 9 pm</small></h3>
-        <p>Broke down tonight and can't wait. $150+ deposit.</p>
-        <div class="price">$144<span>/hr</span></div>
-      </div>
-      <div class="rate">
-        <h3>Small fabrication</h3>
-        <p>Brackets, mounts and one-off parts built to your drawing. Deposit covers the steel, sourcing and handling.</p>
-        <div class="price">$99<span>/hr</span></div>
-      </div>
-      <p class="note">For a quote, text clear photos of the repair, or a drawing with measurements, plus where the job is.</p>
-    </div>
-  </section>
+  <hr class="heat" aria-hidden="true">
 
   <section class="jobs gutter">
     <div class="wrap">
       <h2>Recent jobs</h2>
       <div class="grid">
         <figure class="main">
-          <img src="weld.jpg" alt="Heavy weld on the flange of an orange industrial snow blower" loading="lazy">
+          <div class="ph"><img src="weld.jpg" alt="Heavy weld on the flange of an orange industrial snow blower" loading="lazy"></div>
           <figcaption><b>Industrial snow blower.</b> Welded back together on site, plus an emergency fix on a second machine while he was there.</figcaption>
         </figure>
         <div class="side">
           <figure>
-            <img src="cart.jpg" alt="Repaired axle bracket on a steel wheeled cart" loading="lazy">
+            <div class="ph"><img src="cart.jpg" alt="Repaired axle bracket on a steel wheeled cart" loading="lazy"></div>
             <figcaption><b>Cart axle mount,</b> rebuilt.</figcaption>
           </figure>
           <figure>
-            <img src="hinge.jpg" alt="Welded plate on a steel frame" loading="lazy">
+            <div class="ph"><img src="hinge.jpg" alt="Welded plate on a steel frame" loading="lazy"></div>
             <figcaption><b>Cracked frame plate,</b> welded solid.</figcaption>
           </figure>
         </div>
@@ -250,26 +320,31 @@ footer .logo { font-size: 1.5rem; }
     </div>
   </section>
 
-  <section class="said gutter" id="reviews">
+  <hr class="heat" aria-hidden="true">
+
+  <section class="said gutter has-bg" id="reviews">
+    <div class="bg" data-parallax></div><div class="shade"></div>
     <div class="wrap">
       <div class="lead">
         <figure style="margin:0">
           <blockquote>Thank you to Ray for showing up and doing the weld on my horse wagon. It was an emergency weld as I was at my event. Kept a lot of families happy.</blockquote>
-          <cite><b>Rich Pilon</b>, on Google</cite>
+          <figcaption class="who"><span class="av" style="background:#1f6f8b">R</span><cite><b style="color:var(--white)">Rich Pilon</b><br><span class="stars" aria-label="5 stars">★★★★★</span> Google review</cite></figcaption>
         </figure>
-        <div class="rating"><strong>5.0</strong><span class="stars" aria-label="5 out of 5 stars">★★★★★</span><span>10 Google reviews</span></div>
+        <div class="rating"><strong>5.0</strong><span class="stars" style="font-size:1.4rem" aria-label="5 out of 5 stars">★★★★★</span><span>10 reviews on Google</span>
+          <a class="link" href="https://www.google.com/maps/search/?api=1&amp;query=Ray%27z+Welding+Ltd+Saskatoon" target="_blank" rel="noopener">Read them on Google</a></div>
       </div>
       <div class="more">
-        <figure><blockquote>I called him up and he came immediately, just with a few questions and a quote which was very reasonable, and got to work right away. Even took the time to clean up after finishing the work and didn't charge for cleaning up.</blockquote><cite><b>Kamui Ratzliff</b></cite></figure>
-        <figure><blockquote>Absolutely the best! Quick to get to us, wonderful work and the price was beyond reasonable!</blockquote><cite><b>Elle Esford</b></cite></figure>
-        <figure><blockquote>Excellent craftsmanship. Quick communication. Reasonable pricing and very quick turnaround. Highly recommended.</blockquote><cite><b>Dustin M</b></cite></figure>
-        <figure><blockquote>He came very promptly, he works very efficiently! Also has very reasonable prices!</blockquote><cite><b>Rab</b></cite></figure>
-        <figure><blockquote>Excellent in every way, great work, fair prices, highly recommended.</blockquote><cite><b>Prose</b></cite></figure>
+        <figure class="review"><figcaption class="who"><span class="av" style="background:#7a4b2a">K</span><span><b>Kamui Ratzliff</b><small><span class="stars" aria-label="5 stars">★★★★★</span>Google review</small></span></figcaption><blockquote>I called him up and he came immediately, just with a few questions and a quote which was very reasonable, and got to work right away. Even took the time to clean up after finishing the work and didn't charge for cleaning up.</blockquote></figure>
+        <figure class="review"><figcaption class="who"><span class="av" style="background:#c2410c">E</span><span><b>Elle Esford</b><small><span class="stars" aria-label="5 stars">★★★★★</span>Google review</small></span></figcaption><blockquote>Absolutely the best! Quick to get to us, wonderful work and the price was beyond reasonable!</blockquote></figure>
+        <figure class="review"><figcaption class="who"><span class="av" style="background:#3f5d3a">D</span><span><b>Dustin M</b><small><span class="stars" aria-label="5 stars">★★★★★</span>Google review</small></span></figcaption><blockquote>Excellent craftsmanship. Quick communication. Reasonable pricing and very quick turnaround. Highly recommended.</blockquote></figure>
+        <figure class="review"><figcaption class="who"><span class="av" style="background:#6b3fa0">R</span><span><b>Rab</b><small><span class="stars" aria-label="5 stars">★★★★★</span>Google review</small></span></figcaption><blockquote>He came very promptly, he works very efficiently! Also has very reasonable prices!</blockquote></figure>
+        <figure class="review"><figcaption class="who"><span class="av" style="background:#2f7d32">P</span><span><b>Prose</b><small><span class="stars" aria-label="5 stars">★★★★★</span>Google review</small></span></figcaption><blockquote>Excellent in every way, great work, fair prices, highly recommended.</blockquote></figure>
       </div>
     </div>
   </section>
 
-  <section class="text-ray gutter" id="contact">
+  <section class="text-ray gutter has-bg" id="contact">
+    <div class="shade"></div><div class="bg" data-parallax></div><canvas id="embers" aria-hidden="true"></canvas>
     <div class="wrap">
       <div>
         <h2>Text Ray a photo.</h2>
@@ -287,6 +362,8 @@ footer .logo { font-size: 1.5rem; }
   </section>
 </main>
 
+<div class="dock" id="dock"><a class="btn" href="sms:+13063138281">Text Ray a photo</a><a class="btn call" href="tel:+13063138281">Call</a></div>
+
 <footer class="gutter">
   <div class="wrap">
     <span class="logo">Ray'z Welding</span>
@@ -296,10 +373,10 @@ footer .logo { font-size: 1.5rem; }
 </footer>
 
 <script>
-// Nav turns solid once you're past the film.
+// Nav turns solid once the film has faded out.
 (function () {
   var nav = document.getElementById('nav'), film = document.querySelector('.film');
-  function onScroll() { nav.classList.toggle('solid', window.scrollY > film.offsetHeight - window.innerHeight - 40); }
+  function onScroll() { nav.classList.toggle('solid', film.getBoundingClientRect().bottom < 80); }
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
 })();
 
@@ -324,8 +401,10 @@ document.getElementById('copy').addEventListener('click', function () {
     v.load();
   }).catch(function () { /* poster stays */ });
 
+  // The film finishes at the end of the last chapter, then holds its final frame while the truck section slides over it.
+  var lastCh = [].slice.call(document.querySelectorAll('.chapter')).pop();
   function progress() {
-    var r = film.getBoundingClientRect(), total = r.height - innerHeight;
+    var r = film.getBoundingClientRect(), total = lastCh.getBoundingClientRect().bottom - r.top - innerHeight;
     return Math.min(1, Math.max(0, -r.top / total));
   }
   function frame() {
@@ -340,6 +419,64 @@ document.getElementById('copy').addEventListener('click', function () {
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
+})();
+
+// Dim the pinned last frame as the truck section rides up over it, so it hands off to black.
+(function () {
+  var dim = document.getElementById('dim'), truck = document.getElementById('truck');
+  function upd() {
+    var r = truck.getBoundingClientRect(), t = 1 - (r.bottom - innerHeight * .15) / (r.height + innerHeight * .15);
+    t = Math.min(1, Math.max(0, t));
+    dim.style.opacity = (t < .02 ? 0 : .35 + .65 * t).toFixed(3);
+  }
+  addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); upd();
+})();
+
+// Parallax on the film-still backgrounds, heat lines, reveals and the phone dock.
+(function () {
+  var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bgs = [].slice.call(document.querySelectorAll('[data-parallax]'));
+  function par() { bgs.forEach(function (b) { var r = b.parentNode.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return; b.style.transform = 'translate3d(0,' + ((r.top + r.height / 2 - innerHeight / 2) * -0.12).toFixed(1) + 'px,0)'; }); }
+  if (!still) { addEventListener('scroll', function () { requestAnimationFrame(par); }, { passive: true }); par(); }
+
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) {
+    if (!e.isIntersecting) return;
+    if (e.target.classList.contains('heat')) e.target.classList.add('lit');
+    else { e.target.classList.add('rev'); e.target.classList.remove('pre'); }
+    io.unobserve(e.target);
+  }); }, { threshold: .15 });
+  document.querySelectorAll('.heat').forEach(function (h) { io.observe(h); });
+  if (!still) document.querySelectorAll('.rates .head, .rate, .jobs h2, .jobs figure, .said .lead, .review, .text-ray .wrap > div').forEach(function (el, i) {
+    if (el.getBoundingClientRect().top < innerHeight) return;           // already on screen: leave it alone
+    el.classList.add('pre'); el.style.transitionDelay = (el.matches('.rate, .review') ? (i % 3) * 90 : 0) + 'ms'; io.observe(el);
+  });
+
+  var dock = document.getElementById('dock'), first = document.querySelector('.chapter'), contact = document.getElementById('contact');
+  function dk() { var past = first.getBoundingClientRect().bottom < innerHeight * .4, atEnd = contact.getBoundingClientRect().top < innerHeight; dock.classList.toggle('show', past && !atEnd); }
+  addEventListener('scroll', dk, { passive: true }); dk();
+})();
+
+// A few embers drifting up through the Text Ray section.
+(function () {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var c = document.getElementById('embers'), x = c.getContext('2d'), sec = c.parentNode, P = [], on = false, W, H;
+  function size() { W = c.width = sec.offsetWidth; H = c.height = sec.offsetHeight; }
+  size(); addEventListener('resize', size);
+  new IntersectionObserver(function (e) { on = e[0].isIntersecting; if (on) loop(); }).observe(sec);
+  function spawn() { P.push({ x: Math.random() * W, y: H + 10, vy: .4 + Math.random() * .9, vx: (Math.random() - .5) * .3, r: .8 + Math.random() * 1.8, life: 1, d: .0015 + Math.random() * .003, ph: Math.random() * 6 }); }
+  function loop() {
+    if (!on) return;
+    if (P.length < 34 && Math.random() < .25) spawn();
+    x.clearRect(0, 0, W, H);
+    for (var i = P.length - 1; i >= 0; i--) {
+      var p = P[i]; p.y -= p.vy; p.ph += .03; p.x += p.vx + Math.sin(p.ph) * .25; p.life -= p.d;
+      if (p.life <= 0 || p.y < -10) { P.splice(i, 1); continue; }
+      x.beginPath(); x.arc(p.x, p.y, p.r, 0, 7);
+      x.fillStyle = 'rgba(255,' + (190 + 50 * p.life | 0) + ',' + (120 * p.life | 0) + ',' + (p.life * .85).toFixed(2) + ')';
+      x.shadowColor = 'rgba(255,170,60,.9)'; x.shadowBlur = 8; x.fill();
+    }
+    requestAnimationFrame(loop);
+  }
 })();
 </script>
 </body>
